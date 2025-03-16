@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service-a
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: service-a
+  template:
+    metadata:
+      labels:
+        app: service-a
+      annotations:
+        prometheus.io/scrape: 'true'
+        prometheus.io/path: '/metrics'
+        prometheus.io/port: '8000'
+    spec:
+      containers:
+        - name: service-a
+          image: service-a:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8000
+          resources:
+            requests:
+              cpu: 40m
+              memory: 64Mi
+            limits:
+              cpu: 4000m
+              memory: 128Mi
